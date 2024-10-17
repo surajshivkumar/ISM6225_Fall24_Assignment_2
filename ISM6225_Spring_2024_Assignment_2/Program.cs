@@ -62,24 +62,26 @@ namespace Assignment_2
         {
             try
             {
-                // Approach : Try to mark indexes of elements in place without using extra space.
-                int mark;               
-                // mark the indexes of numbers as -ve of the number if they exist 
-                for(int i=0;i<nums.Length;i++){
-                    mark = Math.Abs(nums[i])-1;
-                    if(nums[mark]>0){
+                // Mark indexes by making the corresponding number negative if found
+                for(int i = 0; i < nums.Length; i++)
+                {
+                    int mark = Math.Abs(nums[i]) - 1;
+                    if(nums[mark] > 0)
+                    {
                         nums[mark] *= -1;
                     }
                 }
-                // new array to record the missing numbers
+
+                // Collect indexes of positive numbers (i.e., missing numbers)
                 List<int> missingNumbers = new List<int>();
-                // all numbers that are greater than 0, i.e missing will be added here.
-                for(int i=0;i<nums.Length;i++){
-                    if(nums[i]>0){
-                        missingNumbers.Add(i+1);
+                for(int i = 0; i < nums.Length; i++)
+                {
+                    if(nums[i] > 0)
+                    {
+                        missingNumbers.Add(i + 1);
                     }
-                }      
-                // this approach avoids sorting      
+                }
+                
                 return missingNumbers; 
             }
             catch (Exception)
@@ -93,24 +95,17 @@ namespace Assignment_2
         {
             try
             {
-                // Approach : 2-Pointer
-                // initialize a left and right pointer 
-                int lP = 0;
-                int rP = nums.Length-1;
-                int temp;
-                // iterate through the array until the two pointers overlap
-                while(lP<rP){
-                    // if number at left pointer is non-even and right pointer is non-odd then swap else move the pointers
-                    if(nums[lP]%2==0)
+                // 2-pointer approach: place evens on left, odds on right
+                int lP = 0, rP = nums.Length - 1;
+                while(lP < rP)
+                {
+                    if(nums[lP] % 2 == 0) lP++;
+                    else if(nums[rP] % 2 != 0) rP--;
+                    else
                     {
-                        lP++;
-                    }
-                    else if(nums[rP]%2!=0){
-                        rP--;
-                    }
-                    else{
-                        temp = nums[lP];
-                        nums[lP]=nums[rP];
+                        // Swap if left is odd and right is even
+                        int temp = nums[lP];
+                        nums[lP] = nums[rP];
                         nums[rP] = temp;
                         lP++;
                         rP--;
@@ -127,24 +122,21 @@ namespace Assignment_2
         // Question 3: Two Sum
         public static int[] TwoSum(int[] nums, int target)
         {
-
             try
-            {   
-                // Approach: Use a dictionary to store the complement (target - nums[i]) as the key and the index as the value; 
-                //for each number, check if it's already in the dictionary, which means we found the pair that sums up to the target,
-                // and return their indices.
-
-                Dictionary<int,int> twoSum = new Dictionary<int, int>();
-                for(int i=0;i<nums.Length;i++){
-                    int diff = target - nums[i];
-                    if(twoSum.ContainsKey(nums[i])){
+            {
+                // Use dictionary to track index of complement values
+                Dictionary<int, int> twoSum = new Dictionary<int, int>();
+                for(int i = 0; i < nums.Length; i++)
+                {
+                    if(twoSum.ContainsKey(nums[i]))
+                    {
+                        // Found the pair
                         return new int[] { twoSum[nums[i]], i };
                     }
-                    else{
-                        twoSum[diff] = i;
-                    }
+                    // Store complement
+                    twoSum[target - nums[i]] = i;
                 }
-                return new int[0]; // Placeholder
+                return new int[0];
             }
             catch (Exception)
             {
@@ -157,24 +149,23 @@ namespace Assignment_2
         {
             try
             {
-                // Approach
-                // Use sliding window approach
-                // slide through a window and find product of all numbers in that window
-                // return maximum product found through thtis search.
+                // Sliding window to calculate the product of every three consecutive numbers
                 int maxProduct = 0;
                 int windowSize = 3;
-                for(int i=0;i<nums.Length-windowSize;i++){
+                for(int i = 0; i <= nums.Length - windowSize; i++)
+                {
                     int prod = 1;
-                    for(int j=i;j<=i+windowSize;j++)
+                    for(int j = i; j < i + windowSize; j++)
                     {
                         prod *= nums[j];
-                    }          
+                    }
 
-                    if(prod>maxProduct){
+                    if(prod > maxProduct)
+                    {
                         maxProduct = prod;
                     }
                 }
-                return maxProduct; // Placeholder
+                return maxProduct;
             }
             catch (Exception)
             {
@@ -187,18 +178,17 @@ namespace Assignment_2
         {
             try
             {
-                // Approach since binary is base 2 we iteratively find remainders of decimal number and add it to result while halving the decimal numbers.
+                // Convert to binary by repeatedly dividing by 2 and storing remainders
+                if(decimalNumber == 0) return "0";
 
-                if(decimalNumber == 0){
-                    return "0";
-                }
                 string binary = "";
-                while(decimalNumber>0){
-                    int rem = decimalNumber%2;
+                while(decimalNumber > 0)
+                {
+                    int rem = decimalNumber % 2;
                     binary = rem + binary;
-                    decimalNumber/=2;
+                    decimalNumber /= 2;
                 }
-                return  binary; // Placeholder
+                return binary;
             }
             catch (Exception)
             {
@@ -211,8 +201,27 @@ namespace Assignment_2
         {
             try
             {
-                // Write your code here
-                return 0; // Placeholder
+                // Binary search for the pivot (minimum element)
+                int lP = 0, rP = nums.Length - 1;
+                if(nums[lP] < nums[rP])
+                {
+                    return nums[lP]; // Array is not rotated
+                }
+
+                while(lP < rP)
+                {
+                    int mid = (lP + rP) / 2;
+
+                    if(nums[mid] > nums[rP])
+                    {
+                        lP = mid + 1;
+                    }
+                    else
+                    {
+                        rP = mid;
+                    }
+                }
+                return nums[lP];
             }
             catch (Exception)
             {
@@ -225,17 +234,18 @@ namespace Assignment_2
         {
             try
             {
-               int rev = 0;
-               int origNum = x;
-               double numLen = Math.Floor(Math.Log(x));
-               for(double i=0;i<numLen-1;i++){
-                rev = x%10 + (rev * 10);
-                x = x/10;
-               }
-               if(origNum == rev){
-                return true;
-               }
-                return false; // Placeholder
+                if(x < 0) return false; // Negative numbers are not palindromes
+
+                int rev = 0, origNum = x;
+
+                while(x > 0)
+                {
+                    int remainder = x % 10;
+                    rev = rev * 10 + remainder;
+                    x /= 10;
+                }
+
+                return origNum == rev;
             }
             catch (Exception)
             {
@@ -248,8 +258,11 @@ namespace Assignment_2
         {
             try
             {
-                // Write your code here
-                return 0; // Placeholder
+                // Recursive Fibonacci calculation
+                if(n == 0) return 0;
+                if(n == 1) return 1;
+
+                return Fibonacci(n - 1) + Fibonacci(n - 2);
             }
             catch (Exception)
             {
