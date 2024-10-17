@@ -62,8 +62,25 @@ namespace Assignment_2
         {
             try
             {
-                // Write your code here
-                return new List<int>(); // Placeholder
+                // Approach : Try to mark indexes of elements in place without using extra space.
+                int mark;               
+                // mark the indexes of numbers as -ve of the number if they exist 
+                for(int i=0;i<nums.Length;i++){
+                    mark = Math.Abs(nums[i])-1;
+                    if(nums[mark]>0){
+                        nums[mark] *= -1;
+                    }
+                }
+                // new array to record the missing numbers
+                List<int> missingNumbers = new List<int>();
+                // all numbers that are greater than 0, i.e missing will be added here.
+                for(int i=0;i<nums.Length;i++){
+                    if(nums[i]>0){
+                        missingNumbers.Add(i+1);
+                    }
+                }      
+                // this approach avoids sorting      
+                return missingNumbers; 
             }
             catch (Exception)
             {
@@ -76,8 +93,30 @@ namespace Assignment_2
         {
             try
             {
-                // Write your code here
-                return new int[0]; // Placeholder
+                // Approach : 2-Pointer
+                // initialize a left and right pointer 
+                int lP = 0;
+                int rP = nums.Length-1;
+                int temp;
+                // iterate through the array until the two pointers overlap
+                while(lP<rP){
+                    // if number at left pointer is non-even and right pointer is non-odd then swap else move the pointers
+                    if(nums[lP]%2==0)
+                    {
+                        lP++;
+                    }
+                    else if(nums[rP]%2!=0){
+                        rP--;
+                    }
+                    else{
+                        temp = nums[lP];
+                        nums[lP]=nums[rP];
+                        nums[rP] = temp;
+                        lP++;
+                        rP--;
+                    }
+                }
+                return nums;
             }
             catch (Exception)
             {
@@ -88,9 +127,23 @@ namespace Assignment_2
         // Question 3: Two Sum
         public static int[] TwoSum(int[] nums, int target)
         {
+
             try
-            {
-                // Write your code here
+            {   
+                // Approach: Use a dictionary to store the complement (target - nums[i]) as the key and the index as the value; 
+                //for each number, check if it's already in the dictionary, which means we found the pair that sums up to the target,
+                // and return their indices.
+
+                Dictionary<int,int> twoSum = new Dictionary<int, int>();
+                for(int i=0;i<nums.Length;i++){
+                    int diff = target - nums[i];
+                    if(twoSum.ContainsKey(nums[i])){
+                        return new int[] { twoSum[nums[i]], i };
+                    }
+                    else{
+                        twoSum[diff] = i;
+                    }
+                }
                 return new int[0]; // Placeholder
             }
             catch (Exception)
@@ -104,8 +157,20 @@ namespace Assignment_2
         {
             try
             {
-                // Write your code here
-                return 0; // Placeholder
+                int maxProduct = 0;
+                int windowSize = 3;
+                for(int i=0;i<nums.Length-windowSize;i++){
+                    int prod = 1;
+                    for(int j=i;j<=i+windowSize;j++)
+                    {
+                        prod *= nums[j];
+                    }          
+
+                    if(prod>maxProduct){
+                        maxProduct = prod;
+                    }
+                }
+                return maxProduct; // Placeholder
             }
             catch (Exception)
             {
