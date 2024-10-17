@@ -157,6 +157,10 @@ namespace Assignment_2
         {
             try
             {
+                // Approach
+                // Use sliding window approach
+                // slide through a window and find product of all numbers in that window
+                // return maximum product found through thtis search.
                 int maxProduct = 0;
                 int windowSize = 3;
                 for(int i=0;i<nums.Length-windowSize;i++){
@@ -183,8 +187,18 @@ namespace Assignment_2
         {
             try
             {
-                // Write your code here
-                return "101010"; // Placeholder
+                // Approach since binary is base 2 we iteratively find remainders of decimal number and add it to result while halving the decimal numbers.
+
+                if(decimalNumber == 0){
+                    return "0";
+                }
+                string binary = "";
+                while(decimalNumber>0){
+                    int rem = decimalNumber%2;
+                    binary = rem + binary;
+                    decimalNumber/=2;
+                }
+                return  binary; // Placeholder
             }
             catch (Exception)
             {
@@ -211,7 +225,16 @@ namespace Assignment_2
         {
             try
             {
-                // Write your code here
+               int rev = 0;
+               int origNum = x;
+               double numLen = Math.Floor(Math.Log(x));
+               for(double i=0;i<numLen-1;i++){
+                rev = x%10 + (rev * 10);
+                x = x/10;
+               }
+               if(origNum == rev){
+                return true;
+               }
                 return false; // Placeholder
             }
             catch (Exception)
